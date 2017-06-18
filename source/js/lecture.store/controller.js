@@ -17,15 +17,19 @@ class LectureStore extends Store {
       return;
     }
 
-    const item = Object.assign({}, data);
-    item.classroom = this._getClassroomId(data.classroom);
-    item.teacher = this._getTeacherId(data.teacher);
-    item.schools = data.schools.map(it => this._getSchoolId(it));
+    const lectureInfo = Object.assign({}, data);
+    lectureInfo.classroom = this._getClassroomId(data.classroom);
+    lectureInfo.teacher = this._getTeacherId(data.teacher);
+    lectureInfo.schools = data.schools.map(it => this._getSchoolId(it));
 
-    const lecture = new Lecture(item);
+    const lecture = new Lecture(lectureInfo);
     const id = this._generateId(PREFIX_ID);
+    const item = {
+      id,
+      lecture,
+    };
 
-    this.items.set(id, lecture);
+    this.items.set(id, item);
   }
 
   delete(id) {
@@ -36,8 +40,58 @@ class LectureStore extends Store {
     return this.items.get(id);
   }
 
-  findByDate(date) {
+  findByDate(date, school) {
+    const lectures = [];
+    const from = new Date(date.from);
+    const to = new Date(date.to);
+    const properInterval = {
+      from,
+      to,
+    };
 
+    this.items.forEach((it) => {
+      if (this._hasSchool) {
+        const from = it.lecture.dateFrom;
+        const to = it.lecture.dateTo;
+        const currentInterval = {
+          from,
+          to,
+        };
+
+        if (this._hasDateInterval(currentInterval, properInterval)) {
+          const lecture = this._adapt(it.lecture);
+          lectures.push(lecture);
+        }
+      }
+    });
+
+    return lectures;
+  }
+
+  _adapt(lecture) {
+    const item = Object.assign({}, lecture);
+    item.classroom = classroomStore.findById(lecture.classroom).classroom;
+    item.teacher = teacherStore.findById(lecture.teacher).teacher;
+    item.schools = lecture.schools.map(it => schoolStore.findById(it).school);
+
+    return item;
+  }
+
+  _hasSchool(lecture, school) {
+    const schools = lecture.schools.map((it) => {
+      const school = schoolStore.findById(it).school;
+      return school.name;
+    });
+
+    return schools.indexOf(school) >= 0;
+  }
+
+  _hasDateInterval(current, proper) {
+    const currentIsBeforeProper = current.to <= proper.from;
+    const currentIsAfterProper = current.from <= proper.to;
+    const inNotRightInterval = currentIsBeforeProper || !currentIsAfterProper;
+
+    return !inNotRightInterval;
   }
 
   _getSchoolId(name) {

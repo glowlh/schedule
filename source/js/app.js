@@ -3,7 +3,7 @@ import Schedule from './schedule/controller';
 const schedule = new Schedule();
 
 schedule.classrooms.add({
-  name: 'Blue wheel',
+  name: 'Blue whale',
   count: 25,
   description: ''
 });
@@ -21,9 +21,31 @@ schedule.lectures.add({
   name: 'Lecture 1',
   schools: ['1-SCHOOL'],
   teacher: 'John',
-  classroom: 'Blue wheel',
-  dateFrom: '2017-05-05T00:00:00',
-  dateTo: '2017-05-05T10:00:00',
+  classroom: 'Blue whale',
+  dateFrom: '2017-04-02T11:00',
+  dateTo: '2017-04-02T12:00',
 });
 
-console.dir(schedule);
+schedule.lectures.add({
+  name: 'Lecture 2',
+  schools: ['1-SCHOOL'],
+  teacher: 'John',
+  classroom: 'Blue whale',
+  dateFrom: '2017-04-02T00:00',
+  dateTo: '2017-04-02T02:00',
+});
+
+schedule.lectures.add({
+  name: 'Lecture 3',
+  schools: ['1-SCHOOL'],
+  teacher: 'John',
+  classroom: 'Blue whale',
+  dateFrom: '2017-04-02T20:00',
+  dateTo: '2017-04-02T21:00',
+});
+const date = {
+  from: '2017-02-02T00:00',
+  to: '2017-04-02T12:00'
+};
+
+console.dir(schedule.lectures.findByDate(date, '1-SCHOOL'));
