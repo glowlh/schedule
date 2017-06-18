@@ -4,12 +4,29 @@ class Store {
     this.items = new Map();
   }
 
-  find(id) {
-    return this.items.get(id);
+  get ids() {
+    return [...this.items].map(p => p[0]);
   }
 
-  add(id, value) {
-    this.items.set(id, value);
+  find() {}
+
+  add() {}
+
+  delete() {}
+
+  _generateId(prefix) {
+    let count = 0;
+
+    while(true) {
+      const isUniqueId  = !this.ids.some(p => p === `${prefix}-${count}`);
+      if (isUniqueId ) {
+        break;
+      }
+
+      count += 1;
+    }
+
+    return `${prefix}-${count}`;
   }
 }
 
