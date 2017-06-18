@@ -14,6 +14,10 @@ class Store {
 
   delete() {}
 
+  findById(id) {
+    return this.items.get(id);
+  }
+
   _generateId(prefix) {
     let count = 0;
 
