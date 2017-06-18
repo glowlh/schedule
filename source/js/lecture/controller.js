@@ -9,10 +9,11 @@ class Lecture {
       name: this.name,
       schools: this.schools,
       teacher: this.teacher,
-      dateFrom: this.dateFrom,
-      dateTo: this.dateTo,
       classroom: this.classroom,
     } = options);
+
+    this.dateFrom = new Date(options.dateFrom);
+    this.dateTo = new Date(options.dateTo);
   }
 }
 
