@@ -4,10 +4,6 @@ class Store {
     this.items = new Map();
   }
 
-  get ids() {
-    return [...this.items].map(p => p[0]);
-  }
-
   find() {}
 
   add() {}
@@ -20,9 +16,10 @@ class Store {
 
   _generateId(prefix) {
     let count = 0;
+    const ids = [...this.items].map(p => p[0]);
 
     while(true) {
-      const isUniqueId  = !this.ids.some(p => p === `${prefix}-${count}`);
+      const isUniqueId  = !ids.some(p => p === `${prefix}-${count}`);
       if (isUniqueId ) {
         break;
       }
