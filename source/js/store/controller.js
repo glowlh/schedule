@@ -15,17 +15,7 @@ class Store {
   }
 
   _generateId(prefix) {
-    let count = 0;
-    const ids = [...this.items].map(p => p[0]);
-
-    while(true) {
-      const isUniqueId  = !ids.some(p => p === `${prefix}-${count}`);
-      if (isUniqueId ) {
-        break;
-      }
-
-      count += 1;
-    }
+    let count = this.items.size + 1;
 
     return `${prefix}-${count}`;
   }
