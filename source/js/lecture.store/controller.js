@@ -1,5 +1,4 @@
 import Store from '../store/controller';
-import Lecture from '../lecture/controller';
 import classroomStore from '../classroom.store/controller';
 import schoolStore from '../school.store/controller';
 import teacherStore from '../teacher.store/controller';
@@ -22,22 +21,7 @@ class LectureStore extends Store {
     lectureInfo.teacher = this._getTeacherId(data.teacher);
     lectureInfo.schools = data.schools.map(it => this._getSchoolId(it));
 
-    const lecture = new Lecture(lectureInfo);
-    const id = this._generateId(PREFIX_ID);
-    const item = {
-      id,
-      lecture,
-    };
-
-    this.items.set(id, item);
-  }
-
-  delete(id) {
-    this.items.delete(id);
-  }
-
-  find(id) {
-    return this.items.get(id);
+    super.add(lectureInfo, PREFIX_ID);
   }
 
   findByDate(date, school) {
