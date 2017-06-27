@@ -4,11 +4,43 @@ class Store {
     this.items = new Map();
   }
 
-  find() {}
+  find(name) {
+    let result = null;
+    this.items.forEach((it) => {
+      if (it.data.name === name) {
+        result = it;
+      }
+    });
 
-  add() {}
+    return result;
+  }
 
-  delete() {}
+  add(data, prefix = 'schedule-item') {
+    const name = data.name;
+    if (this.isExist(name)) {
+      return;
+    }
+
+    const id = this._generateId(prefix);
+    const item = {
+      id,
+      data,
+    };
+    this.items.set(id, item);
+  }
+
+  delete(name) {
+    const item = this.isExist(name);
+    if (!item) {
+      return;
+    }
+
+    this.items.delete(item.id);
+  }
+
+  isExist(name) {
+    return this.find(name) ? true: false;
+  }
 
   findById(id) {
     return this.items.get(id);
