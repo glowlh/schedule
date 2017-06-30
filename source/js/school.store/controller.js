@@ -1,6 +1,6 @@
 import Store from '../store/controller';
-
-const PREFIX_ID = 'school';
+import Scheme from '../validator.scheme/school-scheme';
+import Validator from '../validator/controller';
 
 class SchoolStore extends Store {
 
@@ -9,7 +9,13 @@ class SchoolStore extends Store {
   }
 
   add(data) {
-    super.add(data, PREFIX_ID);
+    const scheme = new Scheme();
+    const validator = new Validator(scheme);
+    if (!validator.valid(data)) {
+      return;
+    }
+
+    super.add(data);
   }
 }
 
