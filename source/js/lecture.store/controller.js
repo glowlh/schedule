@@ -2,26 +2,33 @@ import Store from '../store/controller';
 import classroomStore from '../classroom.store/controller';
 import schoolStore from '../school.store/controller';
 import teacherStore from '../teacher.store/controller';
-
-const PREFIX_ID = 'lecture';
+import Validator from '../validator/controller';
+import LecturePropertiesExistScheme from '../validator.scheme/lecture-properties-exist-scheme';
+import LectureIndependentPropertiesScheme from '../validator.scheme/lecture-independent-properties-scheme';
 
 class LectureStore extends Store {
 
   constructor() {
     super();
+    this.validator = new Validator();
   }
 
   add(data) {
-    if (!this._isValid(data)) {
+    if (!this._isValidExistProps(data)) {
+      return;
+    }
+
+    if (!this._isValidIndependentProps(data)) {
       return;
     }
 
     const lectureInfo = Object.assign({}, data);
-    lectureInfo.classroom = this._getClassroomId(data.classroom);
-    lectureInfo.teacher = this._getTeacherId(data.teacher);
-    lectureInfo.schools = data.schools.map(it => this._getSchoolId(it));
-
-    super.add(lectureInfo, PREFIX_ID);
+    lectureInfo.classroom = classroomStore.find(data.classroom).id;
+    lectureInfo.teacher = teacherStore.find(data.teacher).id;
+    lectureInfo.schools = data.schools.map(it => schoolStore.find(it).id);
+    lectureInfo.dateFrom = new Date(data.dateFrom);
+    lectureInfo.dateTo = new Date(data.dateTo);
+    super.add(lectureInfo);
   }
 
   findByDate(date, school) {
@@ -33,18 +40,20 @@ class LectureStore extends Store {
       to,
     };
 
-    this.items.forEach((it) => {
-      if (this._hasSchool) {
-        const from = it.lecture.dateFrom;
-        const to = it.lecture.dateTo;
+    this.items.forEach((p) => {
+      const item = p.data;
+
+      if (this._hasSchool(item, school)) {
+        const from = item.dateFrom;
+        const to = item.dateTo;
         const currentInterval = {
           from,
           to,
         };
-
+ 
         if (this._hasDateInterval(currentInterval, properInterval)) {
-          const lecture = this._adapt(it.lecture);
-          lectures.push(lecture);
+          // const lecture = this._adapt(item);
+          lectures.push(item);
         }
       }
     });
@@ -52,18 +61,42 @@ class LectureStore extends Store {
     return lectures;
   }
 
+  _isValidExistProps(data) {
+    const lecturePropertiesExistScheme = new LecturePropertiesExistScheme();
+    this.validator.setScheme(lecturePropertiesExistScheme);
+    return this.validator.valid(data);
+  }
+
+  _isValidIndependentProps(data) {
+    const lectureIndependentPropertiesScheme = new LectureIndependentPropertiesScheme();
+    this.validator.setScheme(lectureIndependentPropertiesScheme);
+    let lectures = [];
+    const from = data.dateFrom;
+    const to = data.dateTo;
+
+    data.schools.forEach((it) => {
+      lectures = lectures.concat(this.findByDate({from, to}, it));
+    });
+
+    if (!this.validator.valid({ data, lectures })) {
+      return false;
+    }
+
+    return true;
+  }
+
   _adapt(lecture) {
     const item = Object.assign({}, lecture);
-    item.classroom = classroomStore.findById(lecture.classroom).classroom;
-    item.teacher = teacherStore.findById(lecture.teacher).teacher;
-    item.schools = lecture.schools.map(it => schoolStore.findById(it).school);
+    item.classroom = classroomStore.findById(lecture.classroom).data.name;
+    item.teacher = teacherStore.findById(lecture.teacher).data.name;
+    item.schools = lecture.schools.map(it => schoolStore.findById(it).data.name);
 
     return item;
   }
 
   _hasSchool(lecture, school) {
     const schools = lecture.schools.map((it) => {
-      const school = schoolStore.findById(it).school;
+      const school = schoolStore.findById(it).data;
       return school.name;
     });
 
@@ -76,43 +109,6 @@ class LectureStore extends Store {
     const inNotRightInterval = currentIsBeforeProper || !currentIsAfterProper;
 
     return !inNotRightInterval;
-  }
-
-  _getSchoolId(name) {
-    return schoolStore.find(name).id;
-  }
-
-  _getClassroomId(name) {
-    return classroomStore.find(name).id;
-  }
-
-  _getTeacherId(name) {
-    return teacherStore.find(name).id;
-  }
-
-  _isValid(data) {
-    const classroom = data.classroom;
-    const teacher = data.teacher;
-    const schools = data.schools;
-
-    const result =
-      this._classroomExists(classroom) &&
-      this._teacherExists(teacher) &&
-      this._schoolsExist(schools);
-
-    return result;
-  }
-
-  _classroomExists(name) {
-    return classroomStore.find(name);
-  }
-
-  _teacherExists(name) {
-    return teacherStore.find(name);
-  }
-
-  _schoolsExist(names) {
-    return names.some(it => schoolStore.find(it));
   }
 }
 
