@@ -15,13 +15,13 @@ class Store {
     return result;
   }
 
-  add(data, prefix = 'schedule-item') {
+  add(data) {
     const name = data.name;
     if (this.isExist(name)) {
       return;
     }
 
-    const id = this._generateId(prefix);
+    const id = this._incrementId();
     const item = {
       id,
       data,
@@ -39,17 +39,17 @@ class Store {
   }
 
   isExist(name) {
-    return this.find(name) ? true: false;
+    return this.find(name) ? true : false;
   }
 
   findById(id) {
     return this.items.get(id);
   }
 
-  _generateId(prefix) {
+  _incrementId() {
     let count = this.items.size + 1;
 
-    return `${prefix}-${count}`;
+    return count.toString();
   }
 }
 
