@@ -75,11 +75,7 @@ class LectureStore extends Store {
       lectures = lectures.concat(this.findByDate({from, to}, it));
     });
 
-    if (!this.validator.valid({ data, lectures }, this.store)) {
-      return false;
-    }
-
-    return true;
+    return this.validator.valid({ data, lectures }, this.store);
   }
 
   _adapt(lecture) {
