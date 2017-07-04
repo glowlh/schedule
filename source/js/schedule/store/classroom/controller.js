@@ -4,6 +4,10 @@ import Validator from '../../validator/controller';
 
 class ClassroomStore extends Store {
 
+  constructor(store) {
+    super(store);
+  }
+
   add(data) {
     const scheme = new Scheme();
     const validator = new Validator(scheme);
@@ -15,5 +19,4 @@ class ClassroomStore extends Store {
   }
 }
 
-const classroomStore = new ClassroomStore();
-export default classroomStore;
+export default ClassroomStore;

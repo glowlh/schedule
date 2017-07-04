@@ -1,27 +1,25 @@
 import Scheme from '../../validator.scheme/controller';
-import classroomStore from '../classroom/controller';
-import teacherStore from '../teacher/controller';
-import schoolStore from '../school/controller';
 
 class LecturePropertiesExistScheme extends Scheme {
 
-	valid(data) {
-		const classroomExists = this._propertyExists(classroomStore, data.classroom);
-		const teacherExists = this._propertyExists(teacherStore, data.teacher);
-		const schoolExists = data.schools.some(it => this._propertyExists(schoolStore, it));
-		const propertiesExistInStore = classroomExists && teacherExists && schoolExists;
+  valid(data, store) {
+    this.store = store;
+    const classroomExists = this._propertyExists(this.store.classrooms, data.classroom);
+    const teacherExists = this._propertyExists(this.store.teachers, data.teacher);
+    const schoolExists = data.schools.some(it => this._propertyExists(this.store.schools, it));
+    const propertiesExistInStore = classroomExists && teacherExists && schoolExists;
 
-		return propertiesExistInStore;
-	}
+    return propertiesExistInStore;
+  }
 
-	_propertyExists(store, name) {
-		if (!store.isExist(name)) {
-			console.error(`${name} doesn't exist in the store`);
-			return;
-		}
+  _propertyExists(store, name) {
+    if (!store.isExist(name)) {
+      console.error(`${name} doesn't exist in the store`);
+      return;
+    }
 
-		return true;
-	}
+    return true;
+  }
 }
 
 export default LecturePropertiesExistScheme;

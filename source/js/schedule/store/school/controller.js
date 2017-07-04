@@ -4,8 +4,8 @@ import Validator from '../../validator/controller';
 
 class SchoolStore extends Store {
 
-  constructor() {
-    super();
+  constructor(store) {
+    super(store);
   }
 
   add(data) {
@@ -19,5 +19,4 @@ class SchoolStore extends Store {
   }
 }
 
-const schoolStore = new SchoolStore();
-export default schoolStore;
+export default SchoolStore;

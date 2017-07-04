@@ -1,16 +1,17 @@
-import classroomStore from './classroom/controller';
-import schoolStore from './school/controller';
-import teacherStore from './teacher/controller';
-import lecturesStore from './lecture/controller';
+import ClassroomStore from './classroom/controller';
+import SchoolStore from './school/controller';
+import TeacherStore from './teacher/controller';
+import LecturesStore from './lecture/controller';
 
 class Store {
 
   constructor() {
-    this.classrooms = classroomStore;
-    this.schools = schoolStore;
-    this.teachers = teacherStore;
-    this.lectures = lecturesStore;
+    this.classrooms = new ClassroomStore(this);
+    this.schools = new SchoolStore(this);
+    this.teachers = new TeacherStore(this);
+    this.lectures = new LecturesStore(this);
   }
 }
 
-export default Store;
+const store = new Store();
+export default store;

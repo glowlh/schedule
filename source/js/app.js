@@ -1,29 +1,29 @@
-import Schedule from './schedule/store/controller';
+import Schedule from './schedule/app';
 
 const schedule = new Schedule();
 
-schedule.classrooms.add({
+schedule.store.classrooms.add({
   name: 'Blue whale',
   count: 50,
   description: 'Amazing!'
 });
 
-schedule.schools.add({
+schedule.store.schools.add({
   name: '1-SCHOOL',
   count: 15,
 });
 
-schedule.schools.add({
+schedule.store.schools.add({
   name: '2-SCHOOL',
   count: 20,
 });
 
-schedule.teachers.add({
+schedule.store.teachers.add({
   name: 'John',
   description: 'super teacher'
 });
 
-schedule.lectures.add({
+schedule.store.lectures.add({
   name: 'Lecture 1',
   schools: ['1-SCHOOL'],
   teacher: 'John',
@@ -32,7 +32,7 @@ schedule.lectures.add({
   dateTo: '2017-04-02T12:00',
 });
 
-schedule.lectures.add({
+schedule.store.lectures.add({
   name: 'Lecture 2',
   schools: ['2-SCHOOL'],
   teacher: 'John',
@@ -41,7 +41,7 @@ schedule.lectures.add({
   dateTo: '2017-06-02T02:00',
 });
 
-schedule.lectures.add({
+schedule.store.lectures.add({
   name: 'Lecture 3',
   schools: ['1-SCHOOL'],
   teacher: 'John',

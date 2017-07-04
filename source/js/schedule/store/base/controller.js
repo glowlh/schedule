@@ -1,6 +1,7 @@
 class StoreBase {
 
-  constructor() {
+  constructor(store) {
+    this.store = store;
     this.items = new Map();
   }
 

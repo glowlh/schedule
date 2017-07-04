@@ -1,6 +1,6 @@
 class Scheme {
 
-	valid() {}
+  valid() {}
 }
 
 export default Scheme;
