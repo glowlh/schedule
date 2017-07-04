@@ -1,8 +1,8 @@
-import Store from '../store/controller';
-import Scheme from '../validator.scheme/teacher-scheme';
+import Store from '../store-base/controller';
+import Scheme from './scheme';
 import Validator from '../validator/controller';
 
-class TeacherStore extends Store {
+class SchoolStore extends Store {
 
   constructor() {
     super();
@@ -14,10 +14,10 @@ class TeacherStore extends Store {
     if (!validator.valid(data)) {
       return;
     }
-    
+
     super.add(data);
   }
 }
 
-const teacherStore = new TeacherStore();
-export default teacherStore;
+const schoolStore = new SchoolStore();
+export default schoolStore;

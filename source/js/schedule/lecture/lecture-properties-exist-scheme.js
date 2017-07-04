@@ -1,7 +1,7 @@
-import Scheme from './Scheme';
-import classroomStore from '../classroom.store/controller';
-import teacherStore from '../teacher.store/controller';
-import schoolStore from '../school.store/controller';
+import Scheme from '../validator.scheme/controller';
+import classroomStore from '../classroom/controller';
+import teacherStore from '../teacher/controller';
+import schoolStore from '../school/controller';
 
 class LecturePropertiesExistScheme extends Scheme {
 

@@ -1,4 +1,4 @@
-import Schedule from './schedule/controller';
+import Schedule from './schedule/store/controller';
 
 const schedule = new Schedule();
 

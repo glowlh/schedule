@@ -1,5 +1,5 @@
-import Store from '../store/controller';
-import Scheme from '../validator.scheme/classroom-scheme';
+import Store from '../store-base/controller';
+import Scheme from './scheme';
 import Validator from '../validator/controller';
 
 class ClassroomStore extends Store {

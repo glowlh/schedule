@@ -1,4 +1,4 @@
-class Store {
+class StoreBase {
 
   constructor() {
     this.items = new Map();
@@ -53,4 +53,4 @@ class Store {
   }
 }
 
-export default Store;
+export default StoreBase;

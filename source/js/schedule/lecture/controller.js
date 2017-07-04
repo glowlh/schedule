@@ -1,10 +1,10 @@
-import Store from '../store/controller';
-import classroomStore from '../classroom.store/controller';
-import schoolStore from '../school.store/controller';
-import teacherStore from '../teacher.store/controller';
+import Store from '../store-base/controller';
+import classroomStore from '../classroom/controller';
+import schoolStore from '../school/controller';
+import teacherStore from '../teacher/controller';
 import Validator from '../validator/controller';
-import LecturePropertiesExistScheme from '../validator.scheme/lecture-properties-exist-scheme';
-import LectureIndependentPropertiesScheme from '../validator.scheme/lecture-independent-properties-scheme';
+import LecturePropertiesExistScheme from './lecture-properties-exist-scheme';
+import LectureIndependentPropertiesScheme from './lecture-independent-properties-scheme';
 
 class LectureStore extends Store {
 
