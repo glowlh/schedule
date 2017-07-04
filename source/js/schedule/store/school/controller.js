@@ -1,6 +1,5 @@
 import Store from '../base/controller';
-import Scheme from './scheme';
-import Validator from '../../validator/controller';
+import SchoolValidator from './validator';
 
 class SchoolStore extends Store {
 
@@ -9,8 +8,7 @@ class SchoolStore extends Store {
   }
 
   add(data) {
-    const scheme = new Scheme();
-    const validator = new Validator(scheme);
+    const validator = new SchoolValidator();
     if (!validator.valid(data)) {
       return;
     }

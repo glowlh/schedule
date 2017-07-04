@@ -1,21 +1,15 @@
 import Store from '../base/controller';
-import Validator from '../../validator/controller';
-import LecturePropertiesExistScheme from './lecture-properties-exist-scheme';
-import LectureIndependentPropertiesScheme from './lecture-independent-properties-scheme';
+import LectureValidator from './validator';
 
 class LectureStore extends Store {
 
   constructor(store) {
     super(store);
-    this.validator = new Validator();
+    this.validator = new LectureValidator();
   }
 
   add(data) {
-    if (!this._isValidExistProps(data)) {
-      return;
-    }
-
-    if (!this._isValidIndependentProps(data)) {
+    if (!this.validator.valid(data, this.store)) {
       return;
     }
 
@@ -56,26 +50,6 @@ class LectureStore extends Store {
     });
 
     return lectures;
-  }
-
-  _isValidExistProps(data) {
-    const lecturePropertiesExistScheme = new LecturePropertiesExistScheme();
-    this.validator.setScheme(lecturePropertiesExistScheme);
-    return this.validator.valid(data, this.store);
-  }
-
-  _isValidIndependentProps(data) {
-    const lectureIndependentPropertiesScheme = new LectureIndependentPropertiesScheme();
-    this.validator.setScheme(lectureIndependentPropertiesScheme);
-    let lectures = [];
-    const from = data.dateFrom;
-    const to = data.dateTo;
-
-    data.schools.forEach((it) => {
-      lectures = lectures.concat(this.findByDate({from, to}, it));
-    });
-
-    return this.validator.valid({ data, lectures }, this.store);
   }
 
   _adapt(lecture) {

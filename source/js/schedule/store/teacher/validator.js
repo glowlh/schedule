@@ -1,6 +1,4 @@
-import Scheme from '../../validator.scheme/controller';
-
-class TeacherScheme extends Scheme {
+class TeacherValidator {
 
   valid(data) {
     if (!(data instanceof Object)) {
@@ -17,4 +15,4 @@ class TeacherScheme extends Scheme {
   }
 }
 
-export default TeacherScheme;
+export default TeacherValidator;
