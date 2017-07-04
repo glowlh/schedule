@@ -1,8 +1,8 @@
-import Store from '../store-base/controller';
+import Store from '../base/controller';
 import classroomStore from '../classroom/controller';
 import schoolStore from '../school/controller';
 import teacherStore from '../teacher/controller';
-import Validator from '../validator/controller';
+import Validator from '../../validator/controller';
 import LecturePropertiesExistScheme from './lecture-properties-exist-scheme';
 import LectureIndependentPropertiesScheme from './lecture-independent-properties-scheme';
 

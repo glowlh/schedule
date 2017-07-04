@@ -1,4 +1,4 @@
-import Scheme from '../validator.scheme/controller';
+import Scheme from '../../validator.scheme/controller';
 import classroomStore from '../classroom/controller';
 import teacherStore from '../teacher/controller';
 import schoolStore from '../school/controller';

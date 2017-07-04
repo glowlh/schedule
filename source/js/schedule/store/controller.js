@@ -1,7 +1,7 @@
-import classroomStore from '../classroom/controller';
-import schoolStore from '../school/controller';
-import teacherStore from '../teacher/controller';
-import lecturesStore from '../lecture/controller';
+import classroomStore from './classroom/controller';
+import schoolStore from './school/controller';
+import teacherStore from './teacher/controller';
+import lecturesStore from './lecture/controller';
 
 class Store {
 

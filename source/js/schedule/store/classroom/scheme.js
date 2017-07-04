@@ -1,4 +1,4 @@
-import Scheme from '../validator.scheme/controller';
+import Scheme from '../../validator.scheme/controller';
 
 class ClassroomScheme extends Scheme {
 
