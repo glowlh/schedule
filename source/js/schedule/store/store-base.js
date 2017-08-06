@@ -5,15 +5,12 @@ class StoreBase {
     this.items = new Map();
   }
 
-  find(name) {
-    let result = null;
-    this.items.forEach((it) => {
-      if (it.data.name === name) {
-        result = it;
-      }
-    });
+  findByName(name) {
+    return this.items.find(it => it.data.name === name);
+  }
 
-    return result;
+  findById(id) {
+    return this.items.get(id);
   }
 
   add(data) {
@@ -31,25 +28,20 @@ class StoreBase {
   }
 
   delete(name) {
-    const item = this.isExist(name);
-    if (!item) {
+    if (!this.isExist(name)) {
       return;
     }
 
+    const item = this.findByName(name);
     this.items.delete(item.id);
   }
 
   isExist(name) {
-    return this.find(name) ? true : false;
-  }
-
-  findById(id) {
-    return this.items.get(id);
+    return !!this.findByName(name);
   }
 
   _incrementId() {
     let count = this.items.size + 1;
-
     return count.toString();
   }
 }

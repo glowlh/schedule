@@ -1,4 +1,4 @@
-import Store from '../base/controller';
+import Store from '../store-base';
 import ClassroomValidator from './validator';
 
 class ClassroomStore extends Store {

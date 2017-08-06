@@ -1,4 +1,4 @@
-import Store from '../base/controller';
+import Store from '../store-base';
 import LectureValidator from './validator';
 
 class LectureStore extends Store {
@@ -14,8 +14,8 @@ class LectureStore extends Store {
     }
 
     const lectureInfo = Object.assign({}, data);
-    lectureInfo.classroom = this.store.classrooms.find(data.classroom).id;
-    lectureInfo.teacher = this.store.teachers.find(data.teacher).id;
+    lectureInfo.classroom = this.store.classrooms.findByName(data.classroom).id;
+    lectureInfo.teacher = this.store.teachers.findByName(data.teacher).id;
     lectureInfo.schools = data.schools.map(it => this.store.schools.find(it).id);
     lectureInfo.dateFrom = new Date(data.dateFrom);
     lectureInfo.dateTo = new Date(data.dateTo);

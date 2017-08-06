@@ -40,7 +40,7 @@ class LectureValidator {
     let schoolsCount = 0;
     data.schools.forEach(it => schoolsCount += store.schools.find(it).data.count);
 
-    const classroomCount = store.classrooms.find(data.classroom).data.count;
+    const classroomCount = store.classrooms.findByName(data.classroom).data.count;
 
     return classroomCount >= schoolsCount;
   }
