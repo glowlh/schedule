@@ -1,17 +1,25 @@
 class TeacherValidator {
 
+  constructor() {
+    this.message = null;
+  }
+
   valid(data) {
+    let state = true;
     if (!(data instanceof Object)) {
-      console.error(`teacher data ${data} is not an Object`);
-      return;
+      this.message = `teacher data ${data} is not an Object`;
+      state = false;
     }
 
     if (typeof data.name !== 'string') {
-      console.error(`teacher name ${data.name} is not a String`);
-      return;
+      this.message = `teacher name ${data.name} is not a String`;
+      state = false;
     }
 
-    return true;
+    return {
+      state,
+      message: this.message,
+    };
   }
 }
 

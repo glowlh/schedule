@@ -8,12 +8,23 @@ class ClassroomStore extends Store {
   }
 
   add(data) {
+    const deferred = {};
+    deferred.promise = new Promise((resolve, reject) => {
+      deferred.resolve = resolve;
+      deferred.reject = reject;
+    });
+
     const validator = new ClassroomValidator();
-    if (!validator.valid(data)) {
-      return;
+    const validationError = validator.valid(data);
+    if (!validationError.state) {
+      deferred.reject(validationError.message);
+      return deferred.promise;
     }
 
+    deferred.resolve(data);
     super.add(data);
+
+    return deferred.promise;
   }
 }
 

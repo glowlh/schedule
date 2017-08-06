@@ -1,22 +1,30 @@
 class ClassroomValidator {
 
+  constructor() {
+    this.message = null;
+  }
+
   valid(data) {
+    let state = true;
     if (!(data instanceof Object)) {
-      console.error(`classroom data ${data} is not an Object`);
-      return;
+      this.message = `classroom data ${data} is not an Object`;
+      state = false;
     }
 
-    if (typeof data.name !== 'string') {
-      console.error(`classroom name ${data.name} is not a String`);
-      return;
+    if (typeof data.name !== 'string' && state) {
+      this.message = `classroom name ${data.name} is not a String`;
+      state = false;
     }
 
-    if (typeof data.count !== 'number') {
-      console.error(`classroom count ${data.count} is not a Number`);
-      return;
+    if (typeof data.count !== 'number' && state) {
+      this.message = `classroom count ${data.count} is not a Number`;
+      state = false;
     }
 
-    return true;
+    return {
+      state,
+      message: this.message,
+    };
   }
 }
 

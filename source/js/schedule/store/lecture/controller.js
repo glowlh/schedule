@@ -9,50 +9,69 @@ class LectureStore extends Store {
   }
 
   add(data) {
-    if (!this.validator.valid(data, this.store)) {
-      return;
+    const deferred = {};
+    deferred.promise = new Promise((resolve, reject) => {
+      deferred.resolve = resolve;
+      deferred.reject = reject;
+    });
+
+    const validationError = this.validator.valid(data, this.store);
+    if (!validationError.state) {
+      deferred.reject(validationError.message);
+      return deferred.promise;
     }
 
     const lectureInfo = Object.assign({}, data);
     lectureInfo.classroom = this.store.classrooms.findByName(data.classroom).id;
     lectureInfo.teacher = this.store.teachers.findByName(data.teacher).id;
-    lectureInfo.schools = data.schools.map(it => this.store.schools.find(it).id);
+    lectureInfo.schools = data.schools.map(it => this.store.schools.findByName(it).id);
     lectureInfo.dateFrom = new Date(data.dateFrom);
     lectureInfo.dateTo = new Date(data.dateTo);
+
+    deferred.resolve(lectureInfo);
     super.add(lectureInfo);
+
+    return deferred.promise;
   }
 
   findBySchool(name) {
-    return this.items.filter((p) => {
+    const result = [];
+
+    this.items.forEach((p) => {
       const lecture = p.data;
       const schools = lecture.schools.map((it) => {
         const school = this.store.schools.findById(it).data;
         return school.name;
       });
 
-      return schools.indexOf(name) >= 0;
+      schools.indexOf(name) >= 0 && result.push(lecture) || null;
     });
   }
 
   findByTeacher(name) {
-    return this.items.filter((p) => {
+    const result = [];
+
+    this.items.forEach((p) => {
       const lecture = p.data;
       const teacher = this.store.teacher.findById(lecture.teacher);
 
-      return teacher.name === name;
+      teacher.name === name && result.push(lecture) || null;
     });
   }
 
   findByClassroom(name) {
-    return this.items.filter((p) => {
+    const result = [];
+
+    this.items.forEach((p) => {
       const lecture = p.data;
       const classroom = this.store.classroom.findById(lecture.classroom);
 
-      return classroom.name === name;
+      classroom.name === name && result.push(lecture) || null;
     });
   }
 
   findByDate(date) {
+    const result = [];
     const from = new Date(date.from);
     const to = new Date(date.to);
     const properInterval = {
@@ -60,16 +79,16 @@ class LectureStore extends Store {
       to,
     };
 
-    return this.items.filter((p) => {
-      const item = p.data;
-      const from = item.dateFrom;
-      const to = item.dateTo;
+    return this.items.forEach((p) => {
+      const lecture = p.data;
+      const from = lecture.dateFrom;
+      const to = lecture.dateTo;
       const currentInterval = {
         from,
         to,
       };
 
-      return this._hasDateInterval(currentInterval, properInterval);
+      this._hasDateInterval(currentInterval, properInterval) && result.push(lecture) || null;
     });
   }
 

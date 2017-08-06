@@ -1,7 +1,14 @@
 class LectureValidator {
-  
+
+  constructor() {
+    this.message = null;
+  }
+
   valid(data, store) {
-    return this.hasPropsRule(data, store) && this.hasIndependentPropsRule(data, store); 
+    return {
+      state: this.hasPropsRule(data, store) && this.hasIndependentPropsRule(data, store),
+      message: this.message,
+    };
   }
   
   hasPropsRule(data, store) {
@@ -19,17 +26,14 @@ class LectureValidator {
     data.schools.forEach((it) => {
       lectures = lectures.concat(store.lectures.findByDate({from, to}, it));
     });
-    
-    console.warn(data.name);
-    console.dir(data);
 
     if (lectures.length > 0) {
-      console.error(`This school(s) ${data.schools} is bussy`);
+      this.message = `This school(s) ${data.schools} is bussy`;
       return false;
     }
 
     if (!this._isRightCount(data, store)) {
-      console.error(`This classroom ${data.classroom} is small for the school(s)`);
+      this.message = `This classroom ${data.classroom} is small for the school(s)`;
       return false;
     }
 
@@ -38,7 +42,7 @@ class LectureValidator {
 
   _isRightCount(data, store) {
     let schoolsCount = 0;
-    data.schools.forEach(it => schoolsCount += store.schools.find(it).data.count);
+    data.schools.forEach(it => schoolsCount += store.schools.findByName(it).data.count);
 
     const classroomCount = store.classrooms.findByName(data.classroom).data.count;
 
@@ -47,7 +51,7 @@ class LectureValidator {
 
   _propertyExists(store, name) {
     if (!store.isExist(name)) {
-      console.error(`${name} doesn't exist in the store`);
+      this.message = `${name} doesn't exist in the store`;
       return;
     }
 

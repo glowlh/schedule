@@ -6,7 +6,14 @@ class StoreBase {
   }
 
   findByName(name) {
-    return this.items.find(it => it.data.name === name);
+    const result = [];
+    this.items.forEach((it) => {
+      if (it.data.name === name) {
+        result.push(it);
+      }
+    });
+
+    return result;
   }
 
   findById(id) {
