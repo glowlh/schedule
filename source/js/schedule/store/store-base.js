@@ -6,10 +6,10 @@ class StoreBase {
   }
 
   findByName(name) {
-    const result = [];
+    let result = null;
     this.items.forEach((it) => {
       if (it.data.name === name) {
-        result.push(it);
+        result = it;
       }
     });
 

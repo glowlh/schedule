@@ -1,7 +1,7 @@
-import Store from '../store-base';
+import StoreBase from '../store-base';
 import ClassroomValidator from './validator';
 
-class ClassroomStore extends Store {
+class ClassroomStore extends StoreBase {
 
   constructor(store) {
     super(store);

@@ -24,11 +24,20 @@ class LectureValidator {
     const to = data.dateTo;
 
     data.schools.forEach((it) => {
-      lectures = lectures.concat(store.lectures.findByDate({from, to}, it));
+      const lecturesByInterval = store.lectures.findByDate({from, to}) || [];
+      const lecturesBySchool = store.lectures.findBySchool(it) || [];
+
+      lecturesByInterval.forEach((p) => {
+        lecturesBySchool.forEach((it) => {
+          if (p.id === it.id) {
+            lectures.push(p);
+          }
+        })
+      });
     });
 
     if (lectures.length > 0) {
-      this.message = `This school(s) ${data.schools} is bussy`;
+      this.message = `This school(s) ${data.schools} is busy`;
       return false;
     }
 
