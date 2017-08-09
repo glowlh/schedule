@@ -25,8 +25,8 @@ class LectureStore extends Store {
     lectureInfo.classroom = this.store.classrooms.findByName(data.classroom).id;
     lectureInfo.teacher = this.store.teachers.findByName(data.teacher).id;
     lectureInfo.schools = data.schools.map(it => this.store.schools.findByName(it).id);
-    lectureInfo.dateFrom = new Date(data.dateFrom);
-    lectureInfo.dateTo = new Date(data.dateTo);
+    lectureInfo.dateFrom = (new Date(data.dateFrom)).toISOString();
+    lectureInfo.dateTo = (new Date(data.dateTo)).toISOString();
 
     deferred.resolve(lectureInfo);
     super.add(lectureInfo);
@@ -75,8 +75,8 @@ class LectureStore extends Store {
     const from = new Date(date.from);
     const to = new Date(date.to);
     const properInterval = {
-      from,
-      to,
+      from: from.toISOString(),
+      to: to.toISOString(),
     };
 
     return this.items.forEach((p) => {
@@ -90,6 +90,10 @@ class LectureStore extends Store {
 
       this._hasDateInterval(currentInterval, properInterval) && result.push(lecture) || null;
     });
+  }
+
+  _parseDateToISO(date) {
+
   }
 
   _hasDateInterval(current, adjusted) {
