@@ -1,7 +1,7 @@
-import Store from '../store-base';
+import StoreBase from '../store-base';
 import LectureValidator from './validator';
 
-class LectureStore extends Store {
+class LectureStore extends StoreBase {
 
   constructor(store) {
     super(store);
@@ -46,6 +46,8 @@ class LectureStore extends Store {
 
       schools.indexOf(name) >= 0 && result.push(lecture) || null;
     });
+
+    return result;
   }
 
   findByTeacher(name) {
@@ -57,6 +59,8 @@ class LectureStore extends Store {
 
       teacher.name === name && result.push(lecture) || null;
     });
+
+    return result;
   }
 
   findByClassroom(name) {
@@ -68,18 +72,20 @@ class LectureStore extends Store {
 
       classroom.name === name && result.push(lecture) || null;
     });
+
+    return result;
   }
 
   findByDate(date) {
     const result = [];
     const from = new Date(date.from);
     const to = new Date(date.to);
-    const properInterval = {
+    const adjustedInterval = {
       from: from.toISOString(),
       to: to.toISOString(),
     };
 
-    return this.items.forEach((p) => {
+    this.items.forEach((p) => {
       const lecture = p.data;
       const from = lecture.dateFrom;
       const to = lecture.dateTo;
@@ -88,19 +94,17 @@ class LectureStore extends Store {
         to,
       };
 
-      this._hasDateInterval(currentInterval, properInterval) && result.push(lecture) || null;
+      this._hasDateInterval(currentInterval, adjustedInterval) && result.push(lecture) || null;
     });
-  }
 
-  _parseDateToISO(date) {
-
+    return result;
   }
 
   _hasDateInterval(current, adjusted) {
-    const currentIsBeforeProper = current.to <= adjusted.from;
-    const currentIsAfterProper = current.from <= adjusted.to;
+    const currentIsBeforeAdjusted = current.to < adjusted.from;
+    const currentIsAfterAdjusted = current.from > adjusted.to;
 
-    return !currentIsBeforeProper && currentIsAfterProper;
+    return !currentIsBeforeAdjusted && !currentIsAfterAdjusted;
   }
 }
 

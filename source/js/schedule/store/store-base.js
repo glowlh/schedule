@@ -27,9 +27,11 @@ class StoreBase {
     }
 
     const id = this._incrementId();
+    const newData = Object.assign({}, data);
+    newData.id = id;
     const item = {
       id,
-      data,
+      data: newData,
     };
     this.items.set(id, item);
   }
