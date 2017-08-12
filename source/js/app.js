@@ -1,4 +1,4 @@
-import Schedule from './schedule/app';
+import Schedule from './schedule/index';
 
 const schedule = new Schedule();
 
@@ -64,8 +64,8 @@ Promise.all([
       })
   ).then(() => {
     const date = {
-      from: '2017-02-19T20:30',
-      to: '2017-02-21T22:00'
+      from: '2015-02-19T20:30',
+      to: '2019-02-21T22:00'
     };
-    console.dir(schedule.getLecturesByDateInSchool(date, '1-SCHOOL'));
+    console.dir(schedule.getLecturesByDateInClassroom(date, 'Blue whale-'));
   });
