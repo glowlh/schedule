@@ -3,10 +3,6 @@ import SchoolValidator from './validator';
 
 class SchoolStore extends Store {
 
-  constructor(store) {
-    super(store);
-  }
-
   add(data) {
     const deferred = {};
     deferred.promise = new Promise((resolve, reject) => {
