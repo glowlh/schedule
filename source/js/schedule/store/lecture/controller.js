@@ -57,7 +57,7 @@ class LectureStore extends StoreBase {
       const lecture = p.data;
       const teacher = this.store.teacher.findById(lecture.teacher);
 
-      teacher.name === name && result.push(lecture) || null;
+      teacher.data.name === name && result.push(lecture) || null;
     });
 
     return result;
@@ -68,9 +68,9 @@ class LectureStore extends StoreBase {
 
     this.items.forEach((p) => {
       const lecture = p.data;
-      const classroom = this.store.classroom.findById(lecture.classroom);
+      const classroom = this.store.classrooms.findById(lecture.classroom);
 
-      classroom.name === name && result.push(lecture) || null;
+      classroom.data.name === name && result.push(lecture) || null;
     });
 
     return result;

@@ -10,10 +10,17 @@ class Schedule {
     const lecturesByDate = this.store.lectures.findByDate(date);
     const lecturesBySchool = this.store.lectures.findBySchool(school);
 
-    return this._getTwoLecturesUnion(lecturesByDate, lecturesBySchool);
+    return this._getTwoLectureListsUnion(lecturesByDate, lecturesBySchool);
   }
 
-  _getTwoLecturesUnion(lecturesItemsFirst, lecturesItemsSecond) {
+  getLecturesByDateInClassroom(date, classroom) {
+    const lecturesByDate = this.store.lectures.findByDate(date);
+    const lecturesByClassroom = this.store.lectures.findByClassroom(classroom);
+
+    return this._getTwoLectureListsUnion(lecturesByDate, lecturesByClassroom);
+  }
+
+  _getTwoLectureListsUnion(lecturesItemsFirst, lecturesItemsSecond) {
     return lecturesItemsFirst.filter((it) => {
       const id = it.id;
       return lecturesItemsSecond.some(p => p.id === id);
