@@ -50,7 +50,7 @@ class StoreBase {
   }
 
   _incrementId() {
-    let count = this.items.size + 1;
+    const count = this.items.size + 1;
     return count.toString();
   }
 }

@@ -44,7 +44,7 @@ class LectureStore extends StoreBase {
         return school.name;
       });
 
-      schools.indexOf(name) >= 0 && result.push(lecture) || null;
+      schools.indexOf(name) >= 0 ? result.push(lecture) : null;
     });
 
     return result;
@@ -57,7 +57,7 @@ class LectureStore extends StoreBase {
       const lecture = p.data;
       const teacher = this.store.teacher.findById(lecture.teacher);
 
-      teacher.data.name === name && result.push(lecture) || null;
+      teacher.data.name === name ? result.push(lecture) : null;
     });
 
     return result;
@@ -70,7 +70,7 @@ class LectureStore extends StoreBase {
       const lecture = p.data;
       const classroom = this.store.classrooms.findById(lecture.classroom);
 
-      classroom.data.name === name && result.push(lecture) || null;
+      classroom.data.name === name ? result.push(lecture) : null;
     });
 
     return result;
@@ -87,14 +87,14 @@ class LectureStore extends StoreBase {
 
     this.items.forEach((p) => {
       const lecture = p.data;
-      const from = lecture.dateFrom;
-      const to = lecture.dateTo;
+      const currentFrom = lecture.dateFrom;
+      const currentTo = lecture.dateTo;
       const currentInterval = {
-        from,
-        to,
+        from: currentFrom,
+        to: currentTo,
       };
 
-      this._hasDateInterval(currentInterval, adjustedInterval) && result.push(lecture) || null;
+      this._hasDateInterval(currentInterval, adjustedInterval) ? result.push(lecture) : null;
     });
 
     return result;

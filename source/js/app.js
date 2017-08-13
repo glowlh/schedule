@@ -6,26 +6,26 @@ const classroomPromiseAdd = schedule.store.classrooms
   .add({
     name: 'Blue whale',
     count: 50,
-    description: 'Amazing!'
-  }).catch((e) => console.warn(e));
+    description: 'Amazing!',
+  }).catch(e => console.warn(e));
 
 const schoolPromiseAdd1 = schedule.store.schools
   .add({
     name: '1-SCHOOL',
     count: 15,
-  }).catch((e) => console.warn(e));
+  }).catch(e => console.warn(e));
 
 const schoolPromiseAdd2 = schedule.store.schools
   .add({
     name: '2-SCHOOL',
     count: 15,
-  }).catch((e) => console.warn(e));
+  }).catch(e => console.warn(e));
 
 const teacherPromiseAdd = schedule.store.teachers
   .add({
     name: 'John',
-    description: 'super teacher'
-  }).catch((e) => console.warn(e));
+    description: 'super teacher',
+  }).catch(e => console.warn(e));
 
 Promise.all([
   classroomPromiseAdd,
@@ -62,10 +62,11 @@ Promise.all([
         dateFrom: '2017-02-02T20:00',
         dateTo: '2017-02-02T21:00',
       })
-  ).then(() => {
+  )
+  .then(() => {
     const date = {
       from: '2015-02-19T20:30',
-      to: '2019-02-21T22:00'
+      to: '2019-02-21T22:00',
     };
     console.dir(schedule.getLecturesByDateInClassroom(date, 'Blue whale'));
   });

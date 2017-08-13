@@ -24,7 +24,7 @@ class Schedule {
     return lecturesItemsFirst.filter((it) => {
       const id = it.id;
       return lecturesItemsSecond.some(p => p.id === id);
-    })
+    });
   }
 }
 

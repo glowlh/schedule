@@ -33,20 +33,20 @@ class LectureValidator {
       return;
     }
 
-    let lectures = [];
+    const lectures = [];
     const from = spec.dateFrom;
     const to = spec.dateTo;
 
     spec.schools.forEach((it) => {
-      const lecturesByInterval = store.lectures.findByDate({from, to}) || [];
+      const lecturesByInterval = store.lectures.findByDate({ from, to }) || [];
       const lecturesBySchool = store.lectures.findBySchool(it) || [];
 
       lecturesByInterval.forEach((p) => {
-        lecturesBySchool.forEach((it) => {
-          if (p.id === it.id) {
+        lecturesBySchool.forEach((o) => {
+          if (p.id === o.id) {
             lectures.push(p);
           }
-        })
+        });
       });
     });
 
@@ -63,11 +63,13 @@ class LectureValidator {
 
     let schoolsCount = 0;
 
-    spec.schools.forEach(it => schoolsCount += store.schools.findByName(it).data.count);
+    spec.schools.forEach((it) => {
+      schoolsCount += store.schools.findByName(it).data.count;
+    });
     const classroomCount = store.classrooms.findByName(spec.classroom).data.count;
     const isRoomyClassroom = classroomCount >= schoolsCount;
 
-    if(!isRoomyClassroom) {
+    if (!isRoomyClassroom) {
       this.errors.push(`This classroom ${spec.classroom} is small for the school(s)`);
       this.valid = false;
     }

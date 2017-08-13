@@ -11,7 +11,7 @@ class SchoolValidator {
     return {
       valid: this.valid,
       errors: this.errors,
-    }
+    };
   }
 
   _isObject(spec) {
