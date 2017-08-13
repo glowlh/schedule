@@ -11,9 +11,9 @@ class TeacherStore extends Store {
     });
 
     const validator = new TeacherValidator();
-    const validationError = validator.valid(data);
-    if (!validationError.state) {
-      deferred.reject(validationError.message);
+    const validationError = validator.validate(data);
+    if (!validationError.valid) {
+      deferred.reject(validationError);
       return deferred.promise;
     }
 

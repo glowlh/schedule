@@ -1,25 +1,30 @@
 class TeacherValidator {
 
-  constructor() {
-    this.message = null;
-  }
+  validate(spec) {
+    this.errors = [];
+    this.valid = true;
 
-  valid(data) {
-    let state = true;
-    if (!(data instanceof Object)) {
-      this.message = `teacher data ${data} is not an Object`;
-      state = false;
-    }
-
-    if (typeof data.name !== 'string') {
-      this.message = `teacher name ${data.name} is not a String`;
-      state = false;
-    }
+    this._isObject(spec);
+    this._isValidName(spec.name);
 
     return {
-      state,
-      message: this.message,
+      valid: this.valid,
+      errors: this.errors,
     };
+  }
+
+  _isObject(spec) {
+    if (!(spec instanceof Object)) {
+      this.errors.push(`teacher data ${spec} is not an Object`);
+      this.valid = false;
+    }
+  }
+
+  _isValidName(name) {
+    if (typeof name !== 'string') {
+      this.errors.push(`teacher name ${name} is not a String`);
+      this.valid = false;
+    }
   }
 }
 

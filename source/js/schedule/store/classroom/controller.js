@@ -11,9 +11,9 @@ class ClassroomStore extends StoreBase {
     });
 
     const validator = new ClassroomValidator();
-    const validationError = validator.valid(data);
-    if (!validationError.state) {
-      deferred.reject(validationError.message);
+    const validationObj = validator.validate(data);
+    if (!validationObj.valid) {
+      deferred.reject(validationObj);
       return deferred.promise;
     }
 

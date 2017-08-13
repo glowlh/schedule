@@ -67,5 +67,5 @@ Promise.all([
       from: '2015-02-19T20:30',
       to: '2019-02-21T22:00'
     };
-    console.dir(schedule.getLecturesByDateInClassroom(date, 'Blue whale-'));
+    console.dir(schedule.getLecturesByDateInClassroom(date, 'Blue whale'));
   });

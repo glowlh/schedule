@@ -1,29 +1,43 @@
 class LectureValidator {
 
-  constructor() {
-    this.message = null;
-  }
+  validate(spec, store) {
+    this.errors = [];
+    this.valid = true;
 
-  valid(data, store) {
+    this._isValidClassroom(spec, store);
+    this._isValidTeacher(spec, store);
+    this._isValidSchool(spec, store);
+    this._isValidCount(spec, store);
+    this._isValidLecture(spec, store);
+
     return {
-      state: this.hasPropsRule(data, store) && this.hasIndependentPropsRule(data, store),
-      message: this.message,
+      valid: this.valid,
+      errors: this.errors,
     };
   }
-  
-  hasPropsRule(data, store) {
-    const classroomExists = this._propertyExists(store.classrooms, data.classroom);
-    const teacherExists = this._propertyExists(store.teachers, data.teacher);
-    const schoolExists = data.schools.some(it => this._propertyExists(store.schools, it));
-    return classroomExists && teacherExists && schoolExists;
-  }
-  
-  hasIndependentPropsRule(data, store) {
-    let lectures = [];
-    const from = data.dateFrom;
-    const to = data.dateTo;
 
-    data.schools.forEach((it) => {
+  _isValidClassroom(spec, store) {
+    return this._propertyExists(store.classrooms, spec.classroom);
+  }
+
+  _isValidTeacher(spec, store) {
+    return this._propertyExists(store.teachers, spec.teacher);
+  }
+
+  _isValidSchool(spec, store) {
+    return spec.schools.some(it => this._propertyExists(store.schools, it));
+  }
+
+  _isValidLecture(spec, store) {
+    if (!this.valid) {
+      return;
+    }
+
+    let lectures = [];
+    const from = spec.dateFrom;
+    const to = spec.dateTo;
+
+    spec.schools.forEach((it) => {
       const lecturesByInterval = store.lectures.findByDate({from, to}) || [];
       const lecturesBySchool = store.lectures.findBySchool(it) || [];
 
@@ -37,34 +51,33 @@ class LectureValidator {
     });
 
     if (lectures.length > 0) {
-      this.message = `This school(s) ${data.schools} is busy`;
-      return false;
+      this.errors.push(`This school(s) ${spec.schools} is busy`);
+      this.valid = false;
     }
-
-    if (!this._isRightCount(data, store)) {
-      this.message = `This classroom ${data.classroom} is small for the school(s)`;
-      return false;
-    }
-
-    return true;
   }
 
-  _isRightCount(data, store) {
+  _isValidCount(spec, store) {
+    if (!this.valid) {
+      return;
+    }
+
     let schoolsCount = 0;
-    data.schools.forEach(it => schoolsCount += store.schools.findByName(it).data.count);
 
-    const classroomCount = store.classrooms.findByName(data.classroom).data.count;
+    spec.schools.forEach(it => schoolsCount += store.schools.findByName(it).data.count);
+    const classroomCount = store.classrooms.findByName(spec.classroom).data.count;
+    const isRoomyClassroom = classroomCount >= schoolsCount;
 
-    return classroomCount >= schoolsCount;
+    if(!isRoomyClassroom) {
+      this.errors.push(`This classroom ${spec.classroom} is small for the school(s)`);
+      this.valid = false;
+    }
   }
 
   _propertyExists(store, name) {
     if (!store.isExist(name)) {
-      this.message = `${name} doesn't exist in the store`;
-      return;
+      this.errors.push(`${name} doesn't exist in the store`);
+      this.valid = false;
     }
-
-    return true;
   }
 }
 

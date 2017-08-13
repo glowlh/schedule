@@ -1,30 +1,38 @@
 class ClassroomValidator {
 
-  constructor() {
-    this.message = null;
-  }
+  validate(spec) {
+    this.errors = [];
+    this.valid = true;
 
-  valid(data) {
-    let state = true;
-    if (!(data instanceof Object)) {
-      this.message = `classroom data ${data} is not an Object`;
-      state = false;
-    }
-
-    if (typeof data.name !== 'string' && state) {
-      this.message = `classroom name ${data.name} is not a String`;
-      state = false;
-    }
-
-    if (typeof data.count !== 'number' && state) {
-      this.message = `classroom count ${data.count} is not a Number`;
-      state = false;
-    }
+    this._isObject(spec);
+    this._isValidName(spec.name);
+    this._isValidCount(spec.count);
 
     return {
-      state,
-      message: this.message,
+      valid: this.valid,
+      errors: this.errors,
     };
+  }
+
+  _isObject(spec) {
+    if (!(spec instanceof Object)) {
+      this.errors.push(`classroom data ${spec} is not an Object`);
+      this.valid = false;
+    }
+  }
+
+  _isValidName(name) {
+    if (typeof name !== 'string') {
+      this.errors.push(`classroom name ${name} is not a String`);
+      this.valid = false;
+    }
+  }
+
+  _isValidCount(count) {
+    if (typeof count !== 'number') {
+      this.errors.push(`classroom count ${count} is not a Number`);
+      this.valid = false;
+    }
   }
 }
 

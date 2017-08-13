@@ -15,9 +15,9 @@ class LectureStore extends StoreBase {
       deferred.reject = reject;
     });
 
-    const validationError = this.validator.valid(data, this.store);
-    if (!validationError.state) {
-      deferred.reject(validationError.message);
+    const validationError = this.validator.validate(data, this.store);
+    if (!validationError.valid) {
+      deferred.reject(validationError);
       return deferred.promise;
     }
 
