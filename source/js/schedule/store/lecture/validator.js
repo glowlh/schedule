@@ -1,6 +1,12 @@
 class LectureValidator {
 
   validate(spec, store) {
+    const deferred = {};
+    deferred.promise = new Promise((resolve, reject) => {
+      deferred.resolve = resolve;
+      deferred.reject = reject;
+    });
+
     this.errors = [];
     this.valid = true;
 
@@ -10,10 +16,16 @@ class LectureValidator {
     this._isValidCount(spec, store);
     this._isValidLecture(spec, store);
 
-    return {
-      valid: this.valid,
-      errors: this.errors,
-    };
+    if (this.valid) {
+      deferred.resolve({ valid: this.valid });
+    } else {
+      deferred.reject({
+        valid: this.valid,
+        errors: this.errors,
+      });
+    }
+
+    return deferred.promise;
   }
 
   _isValidClassroom(spec, store) {

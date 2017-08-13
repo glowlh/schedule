@@ -9,29 +9,18 @@ class LectureStore extends StoreBase {
   }
 
   add(data) {
-    const deferred = {};
-    deferred.promise = new Promise((resolve, reject) => {
-      deferred.resolve = resolve;
-      deferred.reject = reject;
-    });
+    return this.validator.validate(data, this.store)
+      .then(() => {
+        const lectureInfo = Object.assign({}, data);
+        lectureInfo.classroom = this.store.classrooms.findByName(data.classroom).id;
+        lectureInfo.teacher = this.store.teachers.findByName(data.teacher).id;
+        lectureInfo.schools = data.schools.map(it => this.store.schools.findByName(it).id);
+        lectureInfo.dateFrom = (new Date(data.dateFrom)).toISOString();
+        lectureInfo.dateTo = (new Date(data.dateTo)).toISOString();
 
-    const validationError = this.validator.validate(data, this.store);
-    if (!validationError.valid) {
-      deferred.reject(validationError);
-      return deferred.promise;
-    }
-
-    const lectureInfo = Object.assign({}, data);
-    lectureInfo.classroom = this.store.classrooms.findByName(data.classroom).id;
-    lectureInfo.teacher = this.store.teachers.findByName(data.teacher).id;
-    lectureInfo.schools = data.schools.map(it => this.store.schools.findByName(it).id);
-    lectureInfo.dateFrom = (new Date(data.dateFrom)).toISOString();
-    lectureInfo.dateTo = (new Date(data.dateTo)).toISOString();
-
-    deferred.resolve(lectureInfo);
-    super.add(lectureInfo);
-
-    return deferred.promise;
+        super.add(lectureInfo);
+      })
+      .catch(error => error);
   }
 
   findBySchool(name) {

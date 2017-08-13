@@ -2,33 +2,41 @@ import Schedule from './schedule/index';
 
 const schedule = new Schedule();
 
-const classroomPromiseAdd = schedule.store.classrooms
+const classroomPromiseAdd1 = schedule.store.classrooms
   .add({
     name: 'Blue whale',
-    count: 50,
+    count: 20,
     description: 'Amazing!',
-  }).catch(e => console.warn(e));
+  });
+
+const classroomPromiseAdd2 = schedule.store.classrooms
+  .add({
+    name: 'Skies',
+    count: 33,
+    description: 'Light blue!',
+  });
 
 const schoolPromiseAdd1 = schedule.store.schools
   .add({
     name: '1-SCHOOL',
     count: 15,
-  }).catch(e => console.warn(e));
+  });
 
 const schoolPromiseAdd2 = schedule.store.schools
   .add({
     name: '2-SCHOOL',
     count: 15,
-  }).catch(e => console.warn(e));
+  });
 
 const teacherPromiseAdd = schedule.store.teachers
   .add({
     name: 'John',
     description: 'super teacher',
-  }).catch(e => console.warn(e));
+  });
 
 Promise.all([
-  classroomPromiseAdd,
+  classroomPromiseAdd1,
+  classroomPromiseAdd2,
   schoolPromiseAdd1,
   schoolPromiseAdd2,
   teacherPromiseAdd
@@ -48,7 +56,7 @@ Promise.all([
         name: 'Lecture 2',
         schools: ['2-SCHOOL'],
         teacher: 'John',
-        classroom: 'Blue whale',
+        classroom: 'Skies',
         dateFrom: '2017-02-15T00:00',
         dateTo: '2017-02-15T02:00',
       })
@@ -68,5 +76,5 @@ Promise.all([
       from: '2015-02-19T20:30',
       to: '2019-02-21T22:00',
     };
-    console.dir(schedule.getLecturesByDateInClassroom(date, 'Blue whale'));
+    console.dir(schedule.getLecturesByDateInClassroom(date, 'Skies'));
   });

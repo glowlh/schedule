@@ -1,6 +1,12 @@
 class SchoolValidator {
 
   validate(spec) {
+    const deferred = {};
+    deferred.promise = new Promise((resolve, reject) => {
+      deferred.resolve = resolve;
+      deferred.reject = reject;
+    });
+
     this.errors = [];
     this.valid = true;
 
@@ -8,10 +14,16 @@ class SchoolValidator {
     this._isValidName(spec.name);
     this._isValidCount(spec.count);
 
-    return {
-      valid: this.valid,
-      errors: this.errors,
-    };
+    if (this.valid) {
+      deferred.resolve({ valid: this.valid });
+    } else {
+      deferred.reject({
+        valid: this.valid,
+        errors: this.errors,
+      });
+    }
+
+    return deferred.promise;
   }
 
   _isObject(spec) {
