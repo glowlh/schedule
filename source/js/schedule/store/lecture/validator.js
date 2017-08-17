@@ -10,9 +10,9 @@ class LectureValidator {
     this.errors = [];
     this.valid = true;
 
-    this._isValidClassroom(spec, store);
-    this._isValidTeacher(spec, store);
-    this._isValidSchool(spec, store);
+    this._classroomExist(spec, store);
+    this._teacherExist(spec, store);
+    this._allSchoolExist(spec, store);
     this._isValidCount(spec, store);
     this._isValidLecture(spec, store);
 
@@ -28,15 +28,15 @@ class LectureValidator {
     return deferred.promise;
   }
 
-  _isValidClassroom(spec, store) {
+  _classroomExist(spec, store) {
     return this._propertyExists(store.classrooms, spec.classroom);
   }
 
-  _isValidTeacher(spec, store) {
+  _teacherExist(spec, store) {
     return this._propertyExists(store.teachers, spec.teacher);
   }
 
-  _isValidSchool(spec, store) {
+  _allSchoolExist(spec, store) {
     return spec.schools.some(it => this._propertyExists(store.schools, it));
   }
 
