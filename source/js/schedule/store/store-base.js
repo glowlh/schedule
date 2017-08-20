@@ -8,7 +8,7 @@ class StoreBase {
   findByName(name) {
     let result = null;
     this.items.forEach((it) => {
-      if (it.data.name === name) {
+      if (it.name === name) {
         result = it;
       }
     });
@@ -29,11 +29,7 @@ class StoreBase {
     const id = this._incrementId();
     const newData = Object.assign({}, data);
     newData.id = id;
-    const item = {
-      id,
-      data: newData,
-    };
-    this.items.set(id, item);
+    this.items.set(id, newData);
   }
 
   delete(name) {
