@@ -9,11 +9,14 @@ class LectureValidator {
 
     this.errors = [];
     this.valid = true;
+    const {dateFrom: from, dateTo: to} = spec;
 
     this._classroomExist(spec, store);
     this._teacherExist(spec, store);
     this._allSchoolExist(spec, store);
     this._isValidCount(spec, store);
+    this._isValidFromDate(from);
+    this._isValidToDate(to);
     this._isValidLecture(spec, store);
 
     if (this.valid) {
@@ -38,6 +41,20 @@ class LectureValidator {
 
   _allSchoolExist(spec, store) {
     return spec.schools.some(it => this._propertyExists(store.schools, it));
+  }
+
+  _isValidFromDate(from) {
+    if (Date.parse(from) < 0 || isNaN(Date.parse(from))) {
+      this.errors.push(`'From' date ${from} is not valid`);
+      this.valid = false;
+    }
+  }
+
+  _isValidToDate(to) {
+    if (Date.parse(to) < 0 || isNaN(Date.parse(to))) {
+      this.errors.push(`'To' date ${to} is not valid`);
+      this.valid = false;
+    }
   }
 
   _isValidLecture(spec, store) {
